@@ -59,7 +59,7 @@ function onBuild(payload) {
     }
 
     // returns the status of the build and pings the discord user specified in the config if present
-    return `Build ${payload.data.status}` + ((payload.data.release.version) ? ` for ${payload.data.release.version}` : ``) + ((process.env.DISCORD_USER_ID) ? ` (<@${process.env.DISCORD_USER_ID}>)` : ``);
+    return `Build ${payload.data.status}` + ((payload.data.release.version) ? ` for v${payload.data.release.version}` : ``) + ((process.env.DISCORD_USER_ID) ? ` (<@${process.env.DISCORD_USER_ID}>)` : ``);
 }
 
 function onRelease(payload) {
