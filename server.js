@@ -13,13 +13,12 @@ const PORT = process.env.PORT || 5000;
 app.post('/toDiscord', async (req, res) => {
     // get payload
     const payload = req.body;
-    console.log('\n\n', payload)
 
-    // send 200 to heroku
-    res.sendStatus(200);
+    // send 204 (no content) to heroku
+    res.sendStatus(204);
 
     const discordJson = {
-        content: `Action ${payload.action} occured for app ${payload.data.name}`
+        content: `[${payload.data.app.name}]: ${getMessage(payload)}`
     };
 
     const options = {
@@ -38,3 +37,37 @@ app.post('/toDiscord', async (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Running on PORT=${PORT}`));
+
+// edit these functions to change the messages your webhook creates in discord.
+
+// this example uses build and release actions from heroku.
+function getMessage(payload) {
+    // ${payload.resource} ${payload.action}, status: ${payload.data.status} 
+    let resource = payload.resource;
+    switch (resource) {
+        case 'build': return onBuild(payload);
+        case 'release': return onRelease(payload);
+        default: return `An action occured, ${payload.action} ${resource} ${payload.data.status}`;
+    }
+}
+
+function onBuild(payload) {
+    let action = payload.action;
+    // if the build was started
+    if (action == 'created') {
+        return `Build started`;
+    }
+
+    // returns the status of the build and pings the discord user specified in the config if present
+    return `Build ${payload.data.status} for ${pyaload.data.release.version}` + (process.env.DISCORD_USER_ID) ? ` (<@${process.env.DISCORD_USER_ID}>)` : ``;
+}
+
+function onRelease(payload) {
+    let action = payload.action;
+    // if the build was started
+    if (action == 'created') {
+        return `Release v${payload.data.version} Started`;
+    }
+
+    return `Release v${payload.data.version} ${payload.data.status}`;
+}
