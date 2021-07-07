@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 5000;
 app.post('/toDiscord', async (req, res) => {
     // get payload
     const payload = req.body;
+    console.log('\n\n', payload)
 
     // send 200 to heroku
     res.sendStatus(200);
@@ -30,7 +31,6 @@ app.post('/toDiscord', async (req, res) => {
         body: JSON.stringify(discordJson)
     };
     request(options, function(error, response) {
-        console.log(response);
         if (error) {
             throw new Error(error);
         }
