@@ -54,18 +54,18 @@ function getMessage(payload) {
 function onBuild(payload) {
     let action = payload.action;
     // if the build was started
-    if (action == 'created') {
+    if (action == 'create') {
         return `Build started`;
     }
 
     // returns the status of the build and pings the discord user specified in the config if present
-    return `Build ${payload.data.status} for ${payload.data.release.version}` + (process.env.DISCORD_USER_ID) ? ` (<@${process.env.DISCORD_USER_ID}>)` : ``;
+    return `Build ${payload.data.status}` + ((payload.data.release.version) ? ` for ${payload.data.release.version}` : ``) + ((process.env.DISCORD_USER_ID) ? ` (<@${process.env.DISCORD_USER_ID}>)` : ``);
 }
 
 function onRelease(payload) {
     let action = payload.action;
     // if the build was started
-    if (action == 'created') {
+    if (action == 'create') {
         return `Release v${payload.data.version} Started`;
     }
 
