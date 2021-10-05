@@ -58,8 +58,15 @@ function onBuild(payload) {
         return `Build started`;
     }
 
+    var discordPing = ``;
+    if (proccess.env.DISCORD_USE_ROLE) {
+        discordPing = ((process.env.DISCORD_ROLE_ID) ? ` (<@${process.env.DISCORD_ROLE_ID}>)` : ``);
+    } else {
+        discordPing = ((process.env.DISCORD_USER_ID) ? ` (<@&${process.env.DISCORD_USER_ID}>)` : ``);
+    }
+
     // returns the status of the build and pings the discord user specified in the config if present
-    return `Build ${payload.data.status}` + ((payload.data.release.version) ? ` for v${payload.data.release.version}` : ``) + ((process.env.DISCORD_USER_ID) ? ` (<@${process.env.DISCORD_USER_ID}>)` : ``);
+    return `Build ${payload.data.status}` + ((payload.data.release.version) ? ` for v${payload.data.release.version}` : ``) + discordPing;
 }
 
 function onRelease(payload) {
