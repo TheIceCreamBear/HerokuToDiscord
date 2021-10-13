@@ -60,9 +60,9 @@ function onBuild(payload) {
 
     var discordPing = ``;
     if (process.env.DISCORD_USE_ROLE) {
-        discordPing = ((process.env.DISCORD_ROLE_ID) ? ` (<@${process.env.DISCORD_ROLE_ID}>)` : ``);
+        discordPing = ((process.env.DISCORD_ROLE_ID) ? ` (<@&${process.env.DISCORD_ROLE_ID}>)` : ``);
     } else {
-        discordPing = ((process.env.DISCORD_USER_ID) ? ` (<@&${process.env.DISCORD_USER_ID}>)` : ``);
+        discordPing = ((process.env.DISCORD_USER_ID) ? ` (<@${process.env.DISCORD_USER_ID}>)` : ``);
     }
 
     // returns the status of the build and pings the discord user specified in the config if present
@@ -73,7 +73,7 @@ function onRelease(payload) {
     let action = payload.action;
     // if the build was started
     if (action == 'create') {
-        return `Release v${payload.data.version} Started`;
+        return `Release v${payload.data.version} started`;
     }
 
     return `Release v${payload.data.version} ${payload.data.status}`;
