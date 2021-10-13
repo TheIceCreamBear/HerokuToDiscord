@@ -59,7 +59,7 @@ function onBuild(payload) {
     }
 
     var discordPing = ``;
-    if (proccess.env.DISCORD_USE_ROLE) {
+    if (process.env.DISCORD_USE_ROLE) {
         discordPing = ((process.env.DISCORD_ROLE_ID) ? ` (<@${process.env.DISCORD_ROLE_ID}>)` : ``);
     } else {
         discordPing = ((process.env.DISCORD_USER_ID) ? ` (<@&${process.env.DISCORD_USER_ID}>)` : ``);
