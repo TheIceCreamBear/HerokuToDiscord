@@ -56,12 +56,12 @@ function getMessage(payload) {
 function onDyno(payload) {
     let discordPing = ``;
     if (process.env.DISCORD_USE_ROLE && (payload.data.state === 'crashed' || payload.data.state === 'up')) {
-        discordPing = ((process.env.DISCORD_ROLE_ID) ? ` (<@&${process.env.DISCORD_ROLE_ID}>) ` : ``);
+        discordPing = ((process.env.DISCORD_ROLE_ID) ? ` (<@&${process.env.DISCORD_ROLE_ID}>)` : ``);
     } else {
-        discordPing = ((process.env.DISCORD_USER_ID) ? ` (<@${process.env.DISCORD_USER_ID}>) ` : ``);
+        discordPing = ((process.env.DISCORD_USER_ID) ? ` (<@${process.env.DISCORD_USER_ID}>)` : ``);
     }
 
-    return `Dyno ${payload.data.name} is now ${payload.data.state} ${discordPing}(action was ${payload.action})`;
+    return `Dyno ${payload.data.name} is now ${payload.data.state} ${discordPing}`;
 }
 
 // build status
