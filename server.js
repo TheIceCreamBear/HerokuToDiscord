@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 5000;
 app.post('/toDiscord', async (req, res) => {
     // get payload
     const payload = req.body;
+    console.log(req.body);
 
     // send 204 (no content) to heroku
     res.sendStatus(204);
