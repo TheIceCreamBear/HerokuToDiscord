@@ -40,7 +40,7 @@ app.listen(PORT, () => console.log(`Running on PORT=${PORT}`));
 
 // edit these functions to change the messages your webhook creates in discord.
 
-// this example uses build and release actions from heroku.
+// this example uses build, release, and dyno actions from heroku.
 function getMessage(payload) {
     // ${payload.resource} ${payload.action}, status: ${payload.data.status} 
     let resource = payload.resource;
@@ -52,6 +52,7 @@ function getMessage(payload) {
     }
 }
 
+// app life cycle
 function onDyno(payload) {
     let discordPing = ``;
     if (process.env.DISCORD_USE_ROLE && (payload.data.state === 'crashed' || payload.data.state === 'up')) {
@@ -63,6 +64,7 @@ function onDyno(payload) {
     return `Dyno ${payload.data.name} is now ${payload.data.state} ${discordPing}(action was ${payload.action})`;
 }
 
+// build status
 function onBuild(payload) {
     let action = payload.action;
     // if the build was started
@@ -81,6 +83,7 @@ function onBuild(payload) {
     return `Build ${payload.data.status}` + ((payload.data.release.version) ? ` for v${payload.data.release.version}` : ``) + discordPing;
 }
 
+// config change or build status
 function onRelease(payload) {
     let action = payload.action;
     // if the build was started
