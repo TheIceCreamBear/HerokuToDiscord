@@ -47,8 +47,20 @@ function getMessage(payload) {
     switch (resource) {
         case 'build': return onBuild(payload);
         case 'release': return onRelease(payload);
+        case 'dyno': return onDyno(payload);
         default: return `An action occured, ${payload.action} ${resource} ${payload.data.status}`;
     }
+}
+
+function onDyno(payload) {
+    let discordPing = ``;
+    if (process.env.DISCORD_USE_ROLE && (payload.data.state === 'crashed' || payload.data.state === 'up')) {
+        discordPing = ((process.env.DISCORD_ROLE_ID) ? ` (<@&${process.env.DISCORD_ROLE_ID}>) ` : ``);
+    } else {
+        discordPing = ((process.env.DISCORD_USER_ID) ? ` (<@${process.env.DISCORD_USER_ID}>) ` : ``);
+    }
+
+    return `Dyno ${payload.data.name} is now ${payload.data.state} ${discordPing}(action was ${payload.action})`;
 }
 
 function onBuild(payload) {
@@ -58,7 +70,7 @@ function onBuild(payload) {
         return `Build started`;
     }
 
-    var discordPing = ``;
+    let discordPing = ``;
     if (process.env.DISCORD_USE_ROLE) {
         discordPing = ((process.env.DISCORD_ROLE_ID) ? ` (<@&${process.env.DISCORD_ROLE_ID}>)` : ``);
     } else {
